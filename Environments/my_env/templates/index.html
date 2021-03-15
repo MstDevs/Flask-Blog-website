@@ -1,11 +1,118 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> <!-- {{ url_for('static', filename= '../static/css/style.css') }} -->
+    <link rel="stylesheet" href="{{ url_for('static', filename= '../css/style.css') }}">
     <title>FlaskBlog</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
 </head>
-<body>
-   <h1>Welcome to FlaskBlog</h1>
+    {% extends 'base.html' %}
+
+    {% block content %}
+   <h1 style="border: 2px #eee solid;
+   color:brown;
+   text-align: center;
+   padding: 10px;
+   font: size 20px;
+   word-break: break-all;">Welcome to FlaskBlog </h1>
+
+   <div id="myBtnContainer">
+    
+    <button class="btn active" onclick="filterShowAll()"> Show all</button>
+    <button class="btn" onclick="filterTags()"> Filter by Tags</button>
+    <button class="btn" onclick="filterDate()"> Filter by Date</button>
+ </div>
+  
+ 
+<section class="show-all" id="fiterShowAll"  style="display: block" >
+    {% for post in posts %}
+    <a href="{{ url_for('post', post_id=post['id']) }}">
+        <h2>{{ post['title'] }}</h2>
+    </a>
+    <span class="badge badge-primary">{{ post['created'] }}</span>
+ <a href="{{ url_for('edit', id=post['id']) }}">
+        <span class="badge badge-warning">Edit</span>
+    </a>
+    <hr>
+{% endfor %}
+
+
+</section>    
+
+<section class="filter-tags" id="filterTags" style="display: none;">
+    {% for post in posts %}
+    <a href="{{ url_for('post', post_id=post['id']) }}">
+        <h2>{{ post['tags'] }}</h2>
+    </a>
+    <span class="badge badge-primary">{{ post['created'] }}</span>
+ <a href="{{ url_for('edit', id=post['id']) }}">
+        <span class="badge badge-warning">Edit</span>
+    </a>
+    <hr>
+{% endfor %}
+
+
+</section> 
+
+<section class="filter-date" id="filterDate" style="display: none;">
+    {% for post in posts %}
+    <a href="{{ url_for('post', post_id=post['id']) }}">
+        <h2>{{ post['created'] }}</h2>
+    </a>
+   <!-- <span class="badge badge-primary">{{ post['created'] }}</span>-->
+ <a href="{{ url_for('edit', id=post['id']) }}">
+        <span class="badge badge-warning">Edit</span>
+    </a>
+    <hr>
+{% endfor %}
+
+
+</section> 
+
+
+
+
+<script>
+    function filterTags() {
+        var date = document.getElementById("filterDate");
+        var showAll = document.getElementById("fiterShowAll");
+        var tags = document.getElementById("filterTags");
+        if (tags.style.display == "none"){
+            tags.style.display = "block";
+            showAll.style.display = "none"
+            date.style.display = "none"
+        }
+    }
+
+    function filterShowAll() {
+        var date = document.getElementById("filterDate");
+        var showAll = document.getElementById("fiterShowAll");
+        var tags = document.getElementById("filterTags");
+        
+        if (showAll.style.display == "none"){
+            showAll.style.display = "block";
+            tags.style.display = "none";
+            date.style.display = "none";
+        }
+    }
+
+    function filterDate() {
+        var date = document.getElementById("filterDate");
+        var showAll = document.getElementById("fiterShowAll");
+        var tags = document.getElementById("filterTags");
+
+        if (date.style.display == "none"){
+            date.style.display = "block";
+            showAll.style.display = "none";
+            tags.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}
 </body>
+
+
+
+<!DOCTYPE html>
+
+
 </html>
